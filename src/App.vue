@@ -7,16 +7,24 @@ import { useCycleList } from './composables/useCycleList';
 //inicializamos nuestro composable con sus funciones y su estado
 
 //creamos un ref para pasarlo a nuestro composable
-const animals = ref([
-	'Dog',
-	'Cat',
-	'Mouse',
-	'Hamster',
-	'Parrot',
-]);
+const animals = ref(['Dog', 'Cat', 'Mouse', 'Hamster', 'Parrot']);
 
 const { state, next, prev } = useCycleList(animals);
+// const { state, next, prev } = useCycleList([
+// 	'Dog',
+// 	'Cat',
+// 	'Mouse',
+// 	'Hamster',
+// 	'Parrot',
+// ]);
 
+// const { state, next, prev } = useCycleList(() => [
+// 	'Dog',
+// 	'Cat',
+// 	'Mouse',
+// 	'Hamster',
+// 	'Parrot',
+// ]);
 </script>
 
 <template>
