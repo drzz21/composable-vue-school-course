@@ -1,9 +1,11 @@
-import { computed, ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 
 //los argumentos se reciben igual que una funcion normal
 
-export const useCycleList = (list: any[]) => {
+//Modificamos para aceptar refs de arreglos, notar que importamos
+//el tipo ref para poder hacer esta asignacion
 
+export const useCycleList = (list: Ref<any[]>) => {
 	//creamos las refs y computed que nos ayudaran a manejar el estado
 	//dentro de nuestro composable
 
@@ -12,7 +14,10 @@ export const useCycleList = (list: any[]) => {
 	//el state simplemente retornará el elemento activo con el indice actual
 	//del arreglo que mandamos como argumento
 
-	const state = computed(() => list[activeIndex.value]);
+	//dado que list es un ref, debemos acceder a su valor
+	//por lo cual concatenamos el ref, a la variable que haciamos referencia
+	//que es list
+	const state = computed(() => list.value[activeIndex.value]);
 
 	// composables simples a veces retornan directamente un valor sin que sea objeto
 	// return ref('');
@@ -26,7 +31,8 @@ export const useCycleList = (list: any[]) => {
 	//nuestro arreglo
 
 	function next() {
-		if (activeIndex.value == list.length - 1) {
+		//lo mismo hacemos referencia al value del list que ahora es un ref
+		if (activeIndex.value == list.value.length - 1) {
 			activeIndex.value = 0;
 		} else {
 			activeIndex.value++;
@@ -35,7 +41,7 @@ export const useCycleList = (list: any[]) => {
 
 	function prev() {
 		if (activeIndex.value == 0) {
-			activeIndex.value = list.length - 1;
+			activeIndex.value = list.value.length - 1;
 		} else {
 			activeIndex.value--;
 		}

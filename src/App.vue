@@ -1,17 +1,22 @@
 <script setup lang="ts">
 //importamos nuestro composable
 
+import { ref } from 'vue';
 import { useCycleList } from './composables/useCycleList';
 
 //inicializamos nuestro composable con sus funciones y su estado
 
-const { state, next, prev } = useCycleList([
+//creamos un ref para pasarlo a nuestro composable
+const animals = ref([
 	'Dog',
 	'Cat',
 	'Mouse',
 	'Hamster',
 	'Parrot',
 ]);
+
+const { state, next, prev } = useCycleList(animals);
+
 </script>
 
 <template>
