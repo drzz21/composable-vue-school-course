@@ -1,4 +1,4 @@
-import { computed, ref, type Ref,toRef,type MaybeRefOrGetter } from 'vue';
+import { computed, ref, type Ref, toRef, type MaybeRefOrGetter } from 'vue';
 
 //los argumentos se reciben igual que una funcion normal
 
@@ -7,7 +7,7 @@ import { computed, ref, type Ref,toRef,type MaybeRefOrGetter } from 'vue';
 
 //para poder aceptar refs o getters o datos planos
 //importamos MaybeRefOrGetter desde vue
-//este tipo nos permite aceptar ya sea ref o getter que sería 
+//este tipo nos permite aceptar ya sea ref o getter que sería
 //una función que retorna el arreglo o un arreglo plano, o un callback
 //por decirlo de otra forma
 
@@ -20,7 +20,7 @@ export const useCycleList = (list: MaybeRefOrGetter<any[]>) => {
 	//vamos a convertir el argumento list en un ref
 	//usando toRef, esto nos permite manejar el valor
 	//de list de manera reactiva sin importar si es un ref o no,
-	//esto lo normaliza, lo asignamos a una nueva variable 
+	//esto lo normaliza, lo asignamos a una nueva variable
 	//y esta variable será la que usaremos dentro del composable
 	//reemplazamos las demas referencias a list por _list
 	const _list = toRef(list);
@@ -31,7 +31,28 @@ export const useCycleList = (list: MaybeRefOrGetter<any[]>) => {
 	//dado que list es un ref, debemos acceder a su valor
 	//por lo cual concatenamos el ref, a la variable que haciamos referencia
 	//que es list
-	const state = computed(() => _list.value[activeIndex.value]);
+	// const state = computed(() => _list.value[activeIndex.value]);
+	//modificamos nuestro computed, para agregar un getter y un setter
+	const state = computed({
+		get() {
+			return _list.value[activeIndex.value];
+		},
+		//creamos la funcion setter
+		set(value) {
+			//esta funcion recibirá un valor que será el valor
+			//del elemento que debemos encontrar en nuestra lista
+			//buscamos el indice del valor en el arreglo
+			const foundIndex = _list.value.indexOf(value);
+			//si lo encontramos
+			//asignamos el indice activo al indice encontrado
+			if (foundIndex >= 0) {
+				activeIndex.value = foundIndex;
+			} else {
+				//sino lo encontramos lanzamos un error
+				throw new Error(`${value} not found in the list`);
+			}
+		},
+	});
 
 	// composables simples a veces retornan directamente un valor sin que sea objeto
 	// return ref('');

@@ -25,6 +25,12 @@ const { state, next, prev } = useCycleList(animals);
 // 	'Hamster',
 // 	'Parrot',
 // ]);
+
+//modificamos el valor de nuestro state,
+//es de tipo solo lectura, por lo que para poder asignarle
+//valor debemos modificar nuestro computed dentro del composable
+//para agregarle un setter
+state.value = 'Cat';
 </script>
 
 <template>
